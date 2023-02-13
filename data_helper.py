@@ -14,4 +14,5 @@ def get_uid_to_data(file_path):
     uids = [g.removeprefix(file_path + "/").removesuffix(".npy") for g in glob(f'{file_path}/*.npy')]
     return { u:np.load(file_path + "/" + u + ".npy") for u in uids}
 
+print(get_uid_to_data('data/test_npys'))
 
