@@ -13,24 +13,45 @@ import matplotlib.pyplot as plt
 LABELS = ['t', 'x', 'y']
 FILE_PATH = "data/test_features.csv"
 
-def data_to_df(dict, labels):
+def data_to_df(dict, labels=LABELS):
+    '''
+    Params:
+    `dict` - a dictionary that maps uids to numpy arrays
+    `labels` - column headers to be used in every data frame
 
+    Output:
+    `out` -  a dictionary that maps uids to numpy arrays
+    '''
     out = {}
     for d in dict.keys():
         out[d] = pd.DataFrame(dict[d], columns=labels)
     return out
 
 
-def get_uid_to_data(file_path):
+def get_uid_to_data(file_path='data/test_npys'):
+    '''
+    Params:
+    `file_path` - the address to the folder 
 
+    Output: a dictionary that maps uids to numpy arrays
+    '''
     uids = [g.removeprefix(file_path + "/").removesuffix(".npy") for g in glob(f'{file_path}/*.npy')]
     return { u : np.load(file_path + "/" + u + ".npy") for u in uids}
 
 
 def features_to_csv(file_path, dict, features_list):
+    '''
+    Params:
+    `file_path` - path to the csv file to which data is being saved
+    `dict` - dictionary that maps uids to the feature values. 
+    `features list` - list of features that are used as the headers
+    '''
     dict.DataFrame.from_dict(dict, orient='index').to_csv(file_path, headerbool=features_list)
 
 def load_all_data():
+    '''
+    Loads all .csv data into .npy files to be used for easier access.
+    '''
     basic_features = pd.read_csv('data/test_basic_features.csv')
     json_file = json.load(open('data/test.json', 'r'))
     uids = basic_features['uid']
